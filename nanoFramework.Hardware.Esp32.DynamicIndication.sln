@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "nanoFramework.Hardware.Esp32.DyncmicIndication", "nanoFramework.Hardware.Esp32.DyncmicIndication\nanoFramework.Hardware.Esp32.DyncmicIndication.nfproj", "{195AADD6-AF7F-4F0A-9BCC-268C754A920B}"
+Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "nanoFramework.Hardware.Esp32.DynamicIndication", "nanoFramework.Hardware.Esp32.DynamicIndication\nanoFramework.Hardware.Esp32.DynamicIndication.nfproj", "{195AADD6-AF7F-4F0A-9BCC-268C754A920B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
