@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <memory>
+#include <atomic>
 
 // from targets/FreeRTOS_ESP32/ESP32_WROOM_32/nanoCLR/nanoFramework.Hardware.ESP32/nanoFramework_hardware_esp32_native_Hardware_Esp32_HighResTimer.cpp
 #define MAX_HRTIMERS 10
@@ -42,31 +43,25 @@ namespace nanoFramework
 						if (timer_idx < 0) {
 							return;
 						}
-
-						if (isEnabled()) {
-							setEnabled(false);
-						}
-
+						setEnabled(false);
 						unregister_timer();
 					}
 
 					bool setEnabled(bool enabled = true) {
-						if (enabled != selector.isEnabled())
-						{
-							bool res = enabled ? EnableTimer() : DisableTimer();
-							selector.setEnabled(enabled);
-							selector.next_element();
-							return res;
-						}
-						return true;
+						bool res = enabled 
+							? EnableTimer() 
+							: DisableTimer();
+
+						selector.setEnabled(enabled);
+						selector.next_element();
+						return res;
 					}
 
 					bool isEnabled() const { return selector.isEnabled(); }
 
 					void setUpdateInterval(uint32_t interval_us) {
 						update_interval_us = interval_us;
-						if (isEnabled())
-						{
+						if (isEnabled()) {
 							EnableTimer();
 						}
 					}
@@ -95,11 +90,8 @@ namespace nanoFramework
 					uint8_t indicators_count;
 
 					bool EnableTimer() {
-						if (isEnabled()) {
-							DisableTimer();
-						}
-
-						if (timer_idx < 0) {
+						if ((timer_idx < 0) ||
+							(isEnabled() && !DisableTimer())) {
 							return false;
 						}
 
@@ -109,10 +101,13 @@ namespace nanoFramework
 					}
 
 					bool DisableTimer() {
-						if (timer_idx < 0)
+						if (timer_idx < 0) {
 							return false;
+						}
 
-						return esp_timer_stop(hrtimers[timer_idx]) == ESP_OK;
+						auto res = esp_timer_stop(hrtimers[timer_idx]) == ESP_OK;
+
+						return res;
 					}
 
 					void NextGroup() { displayPolicy.setData(m_data, selector.next_element()); }
@@ -128,6 +123,7 @@ namespace nanoFramework
 							"Dynamic_updater_timer"};
 						esp_err_t err = esp_timer_create(&timer_args, &newTimerHandle);
 						if (err != ESP_OK) {
+							timer_idx = -1;
 							return;
 						}
 
@@ -140,13 +136,13 @@ namespace nanoFramework
 					}
 
 					static void timer_cb(void* arg) {
-						static_cast<_NativeState*>(arg)->NextGroup();
+						auto _this = static_cast<_NativeState*>(arg);
+						_this->NextGroup();
 					}
 
 					static int FindNextTimerIndex()
 					{
-						for (int index = 0; index < MAX_HRTIMERS; index++)
-						{
+						for (int index = 0; index < MAX_HRTIMERS; index++) {
 							if (hrtimers[index] == 0)
 								return index;
 						}

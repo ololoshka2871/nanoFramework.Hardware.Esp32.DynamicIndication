@@ -28,7 +28,9 @@ namespace nanoFramework
 
 					uint32_t next_element() {
                         channel = (channel + 1) % selectorBus->width();
-                        selectorBus->setData(one() << channel);
+                        if (isEnabled()) {
+                            selectorBus->setData(one() << channel);
+                        }
                         return channel;
                     }
 

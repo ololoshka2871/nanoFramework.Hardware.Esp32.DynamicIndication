@@ -9,13 +9,15 @@ std::map<CLR_RT_HeapBlock *, _NativeState<Controller::selector_t,
     
 void Controller::NativeDispose(CLR_RT_HeapBlock *pMngObj, HRESULT &hr)
 {
-    if (stateMap.find(pMngObj) == stateMap.end())
+    auto it = stateMap.find(pMngObj);
+    if (it == stateMap.end())
     {
         hr = CLR_E_OBJECT_DISPOSED;
     }
     else
     {
-        stateMap.erase(pMngObj);
+        //it->second.setEnabled(false);
+        stateMap.erase(it);
     }
 }
 

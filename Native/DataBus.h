@@ -15,7 +15,6 @@ namespace nanoFramework
         {
             namespace DynamicIndication
             {		
-
                 template<typename Tv = uint32_t>
                 struct _DataBus {
                     using data_type = Tv;
@@ -24,7 +23,7 @@ namespace nanoFramework
                     static_assert(std::numeric_limits<data_type>::is_integer, "Tv mast be integer");
 
 					_DataBus(CLR_RT_TypedArray_INT32& pins, bool invert = false) :
-                        pinsNumbers(pins.GetSize()), invert(invert) 
+                        pinsNumbers(pins.GetSize()), value(), invert(invert) 
                     {
                         auto it = pinsNumbers.begin();
                         std::size_t i = 0;
@@ -45,6 +44,7 @@ namespace nanoFramework
                     }
 
 					void setData(data_type data) {
+                        value = data;
                         for (std::size_t i = 0; i < pinsNumbers.size(); ++i) {
                             auto pn = pinsNumbers[i];
                             gpio_set_level(pn, (((data & 1u << i) != 0) ^ invert));
@@ -52,14 +52,7 @@ namespace nanoFramework
                     }
 
 					data_type getData() const {
-                        data_type res = 0;
-                        for (std::size_t i = 0; i < pinsNumbers.size(); ++i) {
-                            auto pn = pinsNumbers[i];
-                            if (gpio_get_level(pn) ^ invert) {
-                                res |= 1u << i;
-                            }
-                        }
-                        return res;
+                        return value;
                     }
 
 					int width() const { return pinsNumbers.size(); }
@@ -76,6 +69,7 @@ namespace nanoFramework
 
                 private:
                     std::vector<gpio_num_t> pinsNumbers;
+                    data_type value;
                     bool invert;
 				};
             }
