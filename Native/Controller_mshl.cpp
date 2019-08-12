@@ -135,22 +135,3 @@ HRESULT Library_nanoFramework_Hardware_Esp32_DynamicIndication_nanoFramework_Har
     }
     NANOCLR_NOCLEANUP();
 }
-
-HRESULT Library_nanoFramework_Hardware_Esp32_DynamicIndication_nanoFramework_Hardware_Esp32_DynamicIndication_Controller::NativeTest1___BOOLEAN__SZARRAY_U4( CLR_RT_StackFrame& stack )
-{
-    NANOCLR_HEADER(); hr = S_OK;
-    {
-        CLR_RT_HeapBlock* pMngObj = Interop_Marshal_RetrieveManagedObject( stack );
-
-        FAULT_ON_NULL(pMngObj);
-
-        CLR_RT_TypedArray_UINT32 param0;
-        NANOCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ARRAY( stack, 1, param0 ) );
-
-        bool retVal = Controller::NativeTest1( pMngObj,  param0, hr );
-        NANOCLR_CHECK_HRESULT( hr );
-        SetResult_bool( stack, retVal );
-
-    }
-    NANOCLR_NOCLEANUP();
-}

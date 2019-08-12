@@ -87,14 +87,3 @@ unsigned int Controller::NativeGetUpdateInterval(CLR_RT_HeapBlock *pMngObj, HRES
     }
     return pNativeThis->second.getUpdateInterval();
 }
-
-bool Controller::NativeTest1( CLR_RT_HeapBlock* pMngObj, CLR_RT_TypedArray_UINT32 &param0, HRESULT &hr )
-{
-    auto pNativeThis = stateMap.find(pMngObj);
-    if (pNativeThis == stateMap.end())
-    {
-        hr = CLR_E_OBJECT_DISPOSED;
-        return false;
-    }
-    return pNativeThis->second.Test1(param0);
-}

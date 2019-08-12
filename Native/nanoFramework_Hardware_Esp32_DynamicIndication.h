@@ -17,13 +17,12 @@ struct Library_nanoFramework_Hardware_Esp32_DynamicIndication_nanoFramework_Hard
     static const int FIELD_STATIC__DefaultUpdatePeriod_us = 0;
 
     NANOCLR_NATIVE_DECLARE(NativeDispose___VOID);
+    NANOCLR_NATIVE_DECLARE(NativeGetUpdateInterval___U4);
     NANOCLR_NATIVE_DECLARE(NativeInit___VOID__SZARRAY_I4__SZARRAY_I4__I4);
     NANOCLR_NATIVE_DECLARE(NativeIsEnabled___BOOLEAN);
-    NANOCLR_NATIVE_DECLARE(NativeSetEnabled___VOID__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(NativeSetData___VOID__SZARRAY_U4);
+    NANOCLR_NATIVE_DECLARE(NativeSetEnabled___VOID__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(NativeSetUpdateInterval___VOID__U4);
-    NANOCLR_NATIVE_DECLARE(NativeGetUpdateInterval___U4);
-    NANOCLR_NATIVE_DECLARE(NativeTest1___BOOLEAN__SZARRAY_U4);
 
     //--//
 

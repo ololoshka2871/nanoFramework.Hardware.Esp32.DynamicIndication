@@ -21,24 +21,24 @@ static const CLR_RT_MethodHandler method_lookup[] =
     NULL,
     NULL,
     NULL,
+    NULL,
     hw_ctrl::NativeDispose___VOID,
+    hw_ctrl::NativeGetUpdateInterval___U4,
     hw_ctrl::NativeInit___VOID__SZARRAY_I4__SZARRAY_I4__I4,
     hw_ctrl::NativeIsEnabled___BOOLEAN,
-    hw_ctrl::NativeSetEnabled___VOID__BOOLEAN,
     hw_ctrl::NativeSetData___VOID__SZARRAY_U4,
+    hw_ctrl::NativeSetEnabled___VOID__BOOLEAN,
     hw_ctrl::NativeSetUpdateInterval___VOID__U4,
-    hw_ctrl::NativeGetUpdateInterval___U4,
-    hw_ctrl::NativeTest1___BOOLEAN__SZARRAY_U4,
     NULL,
 };
 
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Hardware_Esp32_DynamicIndication =
 {
     "nanoFramework.Hardware.Esp32.DynamicIndication", 
-    0x26D67B37,
+    0xB943C2A1,
     method_lookup,
     ////////////////////////////////////////////////////////////////////////////////////
     // check if the version bellow matches the one in AssemblyNativeVersion attribute //
     ////////////////////////////////////////////////////////////////////////////////////
-    { 1, 0, 0, 0 }
+    { 1, 0, 1, 0 }
 };

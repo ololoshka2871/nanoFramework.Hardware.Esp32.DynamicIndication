@@ -3,7 +3,7 @@
 
 #include "DataBus.h"
 #include "Selector.h"
-#include "ID1ParralelPolcy.h"
+#include "ic74141ParralelPolcy.h"
 
 #include <cstring>
 
@@ -124,8 +124,4 @@ void Controller::NativeState::unregister_timer()
 {
     esp_timer_delete(hrtimers[timer_idx]);
     hrtimers[timer_idx] = 0;
-}
-
-bool Controller::NativeState::Test1(CLR_RT_TypedArray_UINT32& testData) const {
-    return std::memcmp(testData.GetBuffer(), m_data.data(), m_data.size() * sizeof(uint32_t)) == 0;
 }

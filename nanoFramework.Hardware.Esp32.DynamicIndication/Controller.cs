@@ -7,7 +7,7 @@ namespace nanoFramework.Hardware.Esp32.DynamicIndication
 	{
 		#region Fields
 
-		public static readonly uint DefaultUpdatePeriod_us = 1000;
+		public static readonly uint DefaultUpdatePeriod_us = 5000;
 
 		#endregion Fields
 
@@ -25,10 +25,28 @@ namespace nanoFramework.Hardware.Esp32.DynamicIndication
 		}
 
 		#endregion Constructors
-		 
+
+		#region Destructors
+
+		~Controller()
+		{
+			Dispose(false);
+		}
+
+		#endregion Destructors
+
 		#region Methods
 
-		public void Dispose() => NativeDispose();
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			NativeDispose();
+		}
 
 		#endregion Methods
 
@@ -43,7 +61,6 @@ namespace nanoFramework.Hardware.Esp32.DynamicIndication
 			set => NativeSetEnabled(value);
 		}
 
-
 		/// <summary>
 		/// Opdate period in mucroseconds
 		/// </summary>
@@ -53,18 +70,12 @@ namespace nanoFramework.Hardware.Esp32.DynamicIndication
 			set => NativeSetUpdateInterval(value);
 		}
 
-
 		/// <summary>
 		/// indicator data.
-		/// 
+		///
 		/// Each element for one indicator, even if most significant bits are not used
 		/// </summary>
 		public void SetData(uint[] data) => NativeSetData(data);
-
-		public bool TestData(uint[] data)
-		{
-			return NativeTest1(data);
-		}
 
 		#endregion Properties
 
@@ -74,25 +85,22 @@ namespace nanoFramework.Hardware.Esp32.DynamicIndication
 		private extern void NativeDispose();
 
 		[MethodImpl(MethodImplOptions.InternalCall)]
+		private extern uint NativeGetUpdateInterval();
+
+		[MethodImpl(MethodImplOptions.InternalCall)]
 		private extern void NativeInit(int[] dataPins, int[] selectorPins, int dataBitsPreIndicator);
 
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		private extern bool NativeIsEnabled();
 
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		private extern void NativeSetEnabled(bool enabled);
-
-		[MethodImpl(MethodImplOptions.InternalCall)]
 		private extern void NativeSetData(uint[] data);
 
 		[MethodImpl(MethodImplOptions.InternalCall)]
+		private extern void NativeSetEnabled(bool enabled);
+
+		[MethodImpl(MethodImplOptions.InternalCall)]
 		private extern void NativeSetUpdateInterval(uint updateInterval_us);
-
-		[MethodImpl(MethodImplOptions.InternalCall)]
-		private extern uint NativeGetUpdateInterval();
-
-		[MethodImpl(MethodImplOptions.InternalCall)]
-		private extern bool NativeTest1(uint[] data);
 
 		#endregion Stubs
 	}
