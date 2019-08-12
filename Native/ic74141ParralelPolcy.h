@@ -3,10 +3,6 @@
 
 #include <memory>
 
-#include "IDataBus.h"
-
-#include "IDisplayPolcy.h"
-
 namespace nanoFramework
 {
     namespace Hardware

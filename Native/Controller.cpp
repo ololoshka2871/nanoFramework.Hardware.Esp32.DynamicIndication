@@ -24,13 +24,15 @@ void Controller::NativeInit(CLR_RT_HeapBlock *pMngObj, CLR_RT_TypedArray_INT32 &
 {
     if (stateMap.find(pMngObj) == stateMap.end())
     {
-        stateMap.emplace(std::piecewise_construct,
+        auto r = stateMap.emplace(std::piecewise_construct,
                          std::forward_as_tuple(pMngObj),
                          std::forward_as_tuple(
                              std::make_shared<typename Controller::display_policy_t::bus_type>(param0),
                              std::make_shared<typename Controller::selector_t::bus_type>(param1),
                              param2
                         ));
+        if (!r.first->second.configured())
+            hr = CLR_E_BUSY;
     }
     else
     {
