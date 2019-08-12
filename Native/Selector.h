@@ -3,9 +3,6 @@
 
 #include <memory>
 
-#include "ISelector.h"
-#include "IDataBus.h"
-
 namespace nanoFramework
 {
     namespace Hardware
@@ -14,33 +11,14 @@ namespace nanoFramework
         {
             namespace DynamicIndication
             { 
-                /*
-				struct Selector : public ISelector
-				{
-					Selector(std::unique_ptr<IDataBus> &&selectorbus);
-                    ~Selector() override;
-
-					uint32_t next_element() override;
-
-					void setEnabled(bool setEnabled = true) override;
-					bool isEnabled() const override;
-
-                    uint32_t element_count() const override { return bus->width(); }
-
-				private:
-					std::unique_ptr<IDataBus> bus;
-                    uint8_t channel;
-				};
-                */
-
                 template<typename T>
                 struct _Selector
                 {
                     using bus_type = T;
                     using data_type = typename bus_type::data_type;
 
-                    _Selector(std::shared_ptr<bus_type> &selectorBus) :
-                        selectorBus(selectorBus), channel(0) {}
+                    _Selector(std::shared_ptr<bus_type> &&selectorBus) :
+                        selectorBus(std::move(selectorBus)), channel(0) {}
 
                     _Selector(const _Selector&) = delete;
                     
@@ -61,6 +39,8 @@ namespace nanoFramework
 					bool isEnabled() const { return !!selectorBus->getData(); }
 
                     uint32_t group_count() const { return selectorBus->width(); }
+
+                    bool configured() const { return group_count() > 0; }
 
 				private:
 					std::shared_ptr<bus_type> selectorBus;

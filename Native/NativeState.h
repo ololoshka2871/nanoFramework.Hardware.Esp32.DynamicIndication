@@ -25,25 +25,12 @@ namespace nanoFramework
 					using display_policy_t = D;
 					using DataBus_t = typename display_policy_t::bus_type;
 					using SelectorBus_t = typename selector_t::bus_type;
-					
-					_NativeState(std::shared_ptr<DataBus_t> &dataBus,
-					 			 std::shared_ptr<SelectorBus_t> &selectorBus, 
-								 const int indicators_count) 
-						: selector(selectorBus),
-      					  displayPolicy(dataBus, selector.group_count()),
-      					  m_data(indicators_count),
-      					  update_interval_us(10000),
-      					  indicators_count(indicators_count) 
-					{
-						register_timer();
-					}
 
 					_NativeState(std::shared_ptr<DataBus_t> &&dataBus, 
 								 std::shared_ptr<SelectorBus_t> &&selectorBus, 
 								 const int indicators_count) 
-						: selector(std::forward<std::shared_ptr<SelectorBus_t>>(selectorBus)),
-      					  displayPolicy(std::shared_ptr<SelectorBus_t>(dataBus), 
-							selector->group_count()),
+						: selector(std::move(selectorBus)),
+      					  displayPolicy(std::move(dataBus), selector.group_count()),
       					  m_data(indicators_count),
       					  update_interval_us(10000),
       					  indicators_count(indicators_count)
@@ -95,7 +82,7 @@ namespace nanoFramework
 
 					// check if config ok
 					bool configured() const {
-						return selector->configured() && displayPolicy->configured() && 
+						return selector.configured() && displayPolicy.configured() && 
 							(timer_idx >= 0);
 					}
 					

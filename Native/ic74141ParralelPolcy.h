@@ -15,22 +15,6 @@ namespace nanoFramework
         {
             namespace DynamicIndication
             {
-                /*
-                struct ID1ParralelPolicy : IDisplayPolcy {
-                    ID1ParralelPolicy(std::unique_ptr<IDataBus> &&databus, const uint32_t group_count);
-
-                    void setData(const std::vector<uint32_t> &data, uint32_t group) override;
-
-                    static const uint32_t bits_pre_channel = 4;
-
-                private:
-                    std::unique_ptr<IDataBus> databus;
-                    const uint32_t channels_pre_data_bus;
-                    const uint32_t group_count;
-                };
-                */
-
-
                 template<typename T>
                 struct ic7414ParralelPolicy {
                     using bus_type = T;
@@ -38,13 +22,8 @@ namespace nanoFramework
 
                     static const uint32_t bits_pre_channel = 4;
 
-                    ic7414ParralelPolicy(std::shared_ptr<bus_type> &dataBus, const uint32_t group_count) :
-                        databus(databus), 
-                        channels_pre_data_bus(databus->width() / bits_pre_channel),
-                        group_count(group_count) {}
-
-                    ic7414ParralelPolicy(std::shared_ptr<bus_type> &&dataBus, const uint32_t group_count) :
-                        databus(std::move(databus)), 
+                    ic7414ParralelPolicy(std::shared_ptr<bus_type> &&_dataBus, const uint32_t group_count) :
+                        databus(std::move(_dataBus)), 
                         channels_pre_data_bus(this->databus->width() / bits_pre_channel),
                         group_count(group_count) {}
 
@@ -59,8 +38,10 @@ namespace nanoFramework
                         databus->setData(bus_val);
                     }
 
+                    bool configured() const { return group_count > 0 && databus != nullptr && databus->width() > 0; }
+
                 private:
-                    std::unique_ptr<bus_type> databus;
+                    std::shared_ptr<bus_type> databus;
                     const uint32_t channels_pre_data_bus;
                     const uint32_t group_count;
                 };

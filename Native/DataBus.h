@@ -7,8 +7,6 @@
 #include <type_traits>
 #include <algorithm>
 
-//#include "IDataBus.h"
-
 namespace nanoFramework
 {
     namespace Hardware
@@ -17,30 +15,13 @@ namespace nanoFramework
         {
             namespace DynamicIndication
             {		
-                /*	
-				struct DataBus : public IDataBus {
-					DataBus(CLR_RT_TypedArray_INT32& pins);
-                    ~DataBus() override;
 
-					void setData(uint32_t data) override;
-					virtual uint32_t getData() const override;
-
-					int width() const { return pinsNumbers.size(); }
-
-                    void setInverted(bool inverted) override { invert = inverted; }
-                    bool isInverted() const override { return invert; }
-
-                private:
-                    std::vector<gpio_num_t> pinsNumbers;
-                    bool invert;
-				};
-*/
                 template<typename Tv = uint32_t>
                 struct _DataBus {
                     using data_type = Tv;
 
-                    //static_assert(!std::numeric_limits<dataType>::is_signed());
-                    //static_assert(!std::numeric_limits<dataType>::is_integer());
+                    static_assert(!std::numeric_limits<data_type>::is_signed, "Tv mast be unsigned");
+                    static_assert(std::numeric_limits<data_type>::is_integer, "Tv mast be integer");
 
 					_DataBus(CLR_RT_TypedArray_INT32& pins, bool invert = false) :
                         pinsNumbers(pins.GetSize()), invert(invert) 

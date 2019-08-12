@@ -4,12 +4,9 @@
 
 using namespace nanoFramework::Hardware::Esp32::DynamicIndication;
 
-//std::map<CLR_RT_HeapBlock *, Controller::NativeState> Controller::stateMap;
-
 std::map<CLR_RT_HeapBlock *, _NativeState<Controller::selector_t, 
     Controller::display_policy_t>> Controller::stateMap;
     
-
 void Controller::NativeDispose(CLR_RT_HeapBlock *pMngObj, HRESULT &hr)
 {
     if (stateMap.find(pMngObj) == stateMap.end())
@@ -27,11 +24,6 @@ void Controller::NativeInit(CLR_RT_HeapBlock *pMngObj, CLR_RT_TypedArray_INT32 &
 {
     if (stateMap.find(pMngObj) == stateMap.end())
     {
-        auto a = std::make_shared<typename Controller::display_policy_t::bus_type>(param0);
-        auto b = std::make_shared<typename Controller::selector_t::bus_type>(param1);
-        
-        auto c = new _NativeState<Controller::selector_t, Controller::display_policy_t>(a, b, param2);
-       /*
         stateMap.emplace(std::piecewise_construct,
                          std::forward_as_tuple(pMngObj),
                          std::forward_as_tuple(
@@ -39,7 +31,6 @@ void Controller::NativeInit(CLR_RT_HeapBlock *pMngObj, CLR_RT_TypedArray_INT32 &
                              std::make_shared<typename Controller::selector_t::bus_type>(param1),
                              param2
                         ));
-                        */
     }
     else
     {

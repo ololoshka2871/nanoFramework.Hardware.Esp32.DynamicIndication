@@ -40,43 +40,7 @@ namespace nanoFramework
                     using display_policy_t = ic7414ParralelPolicy<_DataBus<uint16_t>>;
 
                 private:
-                /*
-                    // Halper class to store native context
-                    struct NativeState {
-                        NativeState(CLR_RT_TypedArray_INT32 &dataPins,
-                            CLR_RT_TypedArray_INT32 &selectorPins, int indicators_count);   
-                        ~NativeState();
-
-                        bool setEnabled(bool enabled = true);
-                        bool isEnabled() const { return selector->isEnabled(); }
-
-                        void setUpdateInterval(uint32_t interval_us);
-                        uint32_t getUpdateInterval() const  { return update_interval_us; }
-
-                        void setData(CLR_RT_TypedArray_UINT32 &data);
-                        
-                    private:
-                        std::unique_ptr<ISelector> selector;
-                        std::unique_ptr<IDisplayPolcy> displayPolicy;
-                        std::vector<uint32_t> m_data;
-                        uint32_t update_interval_us;
-                        int timer_idx;
-                        int indicators_count;
-
-                        bool EnableTimer();
-                        bool DisableTimer();
-                        void NextGroup();
-                        void register_timer();
-                        void unregister_timer();
-
-                        static void timer_cb(void* arg);
-                    };
-
-                    // Map to have bridge from manadged context to native
-                    static std::map<CLR_RT_HeapBlock*, NativeState> stateMap;
-                    */
-
-                    static std::map<CLR_RT_HeapBlock *, _NativeState<selector_t, display_policy_t>> stateMap;
+                     static std::map<CLR_RT_HeapBlock *, _NativeState<selector_t, display_policy_t>> stateMap;
                 };
             }
         }
