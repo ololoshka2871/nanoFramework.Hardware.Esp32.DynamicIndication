@@ -1,11 +1,13 @@
 #ifndef _NANOFRAMEWORK_HARDWARE_ESP32_DYNAMICINDICATION_NANOFRAMEWORK_HARDWARE_ESP32_DYNAMICINDICATION_DATABUS_H_
 #define _NANOFRAMEWORK_HARDWARE_ESP32_DYNAMICINDICATION_NANOFRAMEWORK_HARDWARE_ESP32_DYNAMICINDICATION_DATABUS_H_
 
-#include <vector>
-
 #include "nanoCLR_Interop.h"
 
-#include "IDataBus.h"
+#include <vector>
+#include <type_traits>
+#include <algorithm>
+
+//#include "IDataBus.h"
 
 namespace nanoFramework
 {
@@ -14,7 +16,8 @@ namespace nanoFramework
         namespace Esp32
         {
             namespace DynamicIndication
-            {			
+            {		
+                /*	
 				struct DataBus : public IDataBus {
 					DataBus(CLR_RT_TypedArray_INT32& pins);
                     ~DataBus() override;
@@ -26,6 +29,69 @@ namespace nanoFramework
 
                     void setInverted(bool inverted) override { invert = inverted; }
                     bool isInverted() const override { return invert; }
+
+                private:
+                    std::vector<gpio_num_t> pinsNumbers;
+                    bool invert;
+				};
+*/
+                template<typename Tv = uint32_t>
+                struct _DataBus {
+                    using data_type = Tv;
+
+                    //static_assert(!std::numeric_limits<dataType>::is_signed());
+                    //static_assert(!std::numeric_limits<dataType>::is_integer());
+
+					_DataBus(CLR_RT_TypedArray_INT32& pins, bool invert = false) :
+                        pinsNumbers(pins.GetSize()), invert(invert) 
+                    {
+                        auto it = pinsNumbers.begin();
+                        std::size_t i = 0;
+                        for (; it != pinsNumbers.end(); ++it, ++i) {
+                            auto pn = static_cast<gpio_num_t>(pins.GetValue(i));
+                            *it = pn;
+                            gpio_reset_pin(pn);
+                            gpio_set_direction(pn, GPIO_MODE_OUTPUT);
+                            gpio_set_pull_mode(pn, GPIO_FLOATING);
+                        }
+                        setData(invert ? std::numeric_limits<data_type>::max() : 0);
+                    }
+
+                    ~_DataBus() {
+                        std::for_each(pinsNumbers.cbegin(), pinsNumbers.cend(), [](gpio_num_t pn) {
+                            gpio_reset_pin(pn);
+                        });
+                    }
+
+					void setData(data_type data) {
+                        for (std::size_t i = 0; i < pinsNumbers.size(); ++i) {
+                            auto pn = pinsNumbers[i];
+                            gpio_set_level(pn, (((data & 1u << i) != 0) ^ invert));
+                        }
+                    }
+
+					data_type getData() const {
+                        data_type res = 0;
+                        for (std::size_t i = 0; i < pinsNumbers.size(); ++i) {
+                            auto pn = pinsNumbers[i];
+                            if (gpio_get_level(pn) ^ invert) {
+                                res |= 1u << i;
+                            }
+                        }
+                        return res;
+                    }
+
+					int width() const { return pinsNumbers.size(); }
+
+                    void setInverted(bool inverted) { 
+                        if (inverted != invert) {
+                            auto oldata = getData();
+                            invert = inverted; 
+                            setData(oldata);
+                        }
+                    }
+                    
+                    bool isInverted() const { return invert; }
 
                 private:
                     std::vector<gpio_num_t> pinsNumbers;

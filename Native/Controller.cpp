@@ -1,9 +1,14 @@
 #include "nanoFramework_Hardware_Esp32_DynamicIndication.h"
+
 #include "Controller.h"
 
 using namespace nanoFramework::Hardware::Esp32::DynamicIndication;
 
-std::map<CLR_RT_HeapBlock *, Controller::NativeState> Controller::stateMap;
+//std::map<CLR_RT_HeapBlock *, Controller::NativeState> Controller::stateMap;
+
+std::map<CLR_RT_HeapBlock *, _NativeState<Controller::selector_t, 
+    Controller::display_policy_t>> Controller::stateMap;
+    
 
 void Controller::NativeDispose(CLR_RT_HeapBlock *pMngObj, HRESULT &hr)
 {
@@ -22,9 +27,19 @@ void Controller::NativeInit(CLR_RT_HeapBlock *pMngObj, CLR_RT_TypedArray_INT32 &
 {
     if (stateMap.find(pMngObj) == stateMap.end())
     {
+        auto a = std::make_shared<typename Controller::display_policy_t::bus_type>(param0);
+        auto b = std::make_shared<typename Controller::selector_t::bus_type>(param1);
+        
+        auto c = new _NativeState<Controller::selector_t, Controller::display_policy_t>(a, b, param2);
+       /*
         stateMap.emplace(std::piecewise_construct,
                          std::forward_as_tuple(pMngObj),
-                         std::forward_as_tuple(param0, param1, param2));
+                         std::forward_as_tuple(
+                             std::make_shared<typename Controller::display_policy_t::bus_type>(param0),
+                             std::make_shared<typename Controller::selector_t::bus_type>(param1),
+                             param2
+                        ));
+                        */
     }
     else
     {
