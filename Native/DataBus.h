@@ -16,13 +16,13 @@ namespace nanoFramework
             namespace DynamicIndication
             {		
                 template<typename Tv = uint32_t>
-                struct _DataBus {
+                struct DataBus {
                     using data_type = Tv;
 
                     static_assert(!std::numeric_limits<data_type>::is_signed, "Tv mast be unsigned");
                     static_assert(std::numeric_limits<data_type>::is_integer, "Tv mast be integer");
 
-					_DataBus(CLR_RT_TypedArray_INT32& pins, bool invert = false) :
+					DataBus(CLR_RT_TypedArray_INT32& pins, bool invert = false) :
                         pinsNumbers(pins.GetSize()), value(), invert(invert) 
                     {
                         auto it = pinsNumbers.begin();
@@ -37,7 +37,7 @@ namespace nanoFramework
                         setData(invert ? std::numeric_limits<data_type>::max() : 0);
                     }
 
-                    ~_DataBus() {
+                    ~DataBus() {
                         std::for_each(pinsNumbers.cbegin(), pinsNumbers.cend(), [](gpio_num_t pn) {
                             gpio_reset_pin(pn);
                         });

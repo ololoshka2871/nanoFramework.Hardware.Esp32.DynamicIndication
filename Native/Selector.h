@@ -12,17 +12,17 @@ namespace nanoFramework
             namespace DynamicIndication
             { 
                 template<typename T>
-                struct _Selector
+                struct Selector
                 {
                     using bus_type = T;
                     using data_type = typename bus_type::data_type;
 
-                    _Selector(std::shared_ptr<bus_type> &&selectorBus) :
+                    Selector(std::shared_ptr<bus_type> &&selectorBus) :
                         selectorBus(std::move(selectorBus)), channel(0) {}
 
-                    _Selector(const _Selector&) = delete;
+                    Selector(const Selector&) = delete;
                     
-                    ~_Selector() { setEnabled(false); }
+                    ~Selector() { setEnabled(false); }
 
                     static constexpr data_type one() { return data_type(1); }
 

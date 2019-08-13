@@ -4,7 +4,7 @@
 
 using namespace nanoFramework::Hardware::Esp32::DynamicIndication;
 
-std::map<CLR_RT_HeapBlock *, _NativeState<Controller::selector_t, 
+std::map<CLR_RT_HeapBlock *, NativeState<Controller::selector_t, 
     Controller::display_policy_t>> Controller::stateMap;
     
 void Controller::NativeDispose(CLR_RT_HeapBlock *pMngObj, HRESULT &hr)
@@ -16,7 +16,6 @@ void Controller::NativeDispose(CLR_RT_HeapBlock *pMngObj, HRESULT &hr)
     }
     else
     {
-        //it->second.setEnabled(false);
         stateMap.erase(it);
     }
 }

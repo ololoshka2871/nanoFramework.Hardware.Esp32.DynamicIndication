@@ -36,11 +36,11 @@ namespace nanoFramework
                     // get current update refrash rate
                     static unsigned int NativeGetUpdateInterval(CLR_RT_HeapBlock* pMngObj, HRESULT &hr);
 
-                    using selector_t = _Selector<_DataBus<uint8_t>>;
-                    using display_policy_t = ic7414ParralelPolicy<_DataBus<uint16_t>>;
+                    using selector_t = Selector<DataBus<uint8_t>>;
+                    using display_policy_t = ic7414ParralelPolicy<DataBus<uint16_t>>;
 
                 private:
-                     static std::map<CLR_RT_HeapBlock *, _NativeState<selector_t, display_policy_t>> stateMap;
+                     static std::map<CLR_RT_HeapBlock *, NativeState<selector_t, display_policy_t>> stateMap;
                 };
             }
         }

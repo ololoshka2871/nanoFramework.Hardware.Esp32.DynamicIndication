@@ -26,11 +26,7 @@ set(nanoFramework.Hardware.Esp32.DynamicIndication_SRCS
     nanoFramework_Hardware_Esp32_DynamicIndication.cpp
     Controller_mshl.cpp
     Controller.cpp
-    Controller_NativeState.cpp
-
-    Selector.cpp
-    DataBus.cpp
-    ic74141ParralelPolcy.cpp
+	
 )
 
 foreach(SRC_FILE ${nanoFramework.Hardware.Esp32.DynamicIndication_SRCS})

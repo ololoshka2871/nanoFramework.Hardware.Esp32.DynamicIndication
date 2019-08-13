@@ -21,13 +21,13 @@ namespace nanoFramework
             {
 				// Halper class to store native context
 				template<typename S, typename D>
-				struct _NativeState {
+				struct NativeState {
 					using selector_t = S;
 					using display_policy_t = D;
 					using DataBus_t = typename display_policy_t::bus_type;
 					using SelectorBus_t = typename selector_t::bus_type;
 
-					_NativeState(std::shared_ptr<DataBus_t> &&dataBus, 
+					NativeState(std::shared_ptr<DataBus_t> &&dataBus, 
 								 std::shared_ptr<SelectorBus_t> &&selectorBus, 
 								 const int indicators_count) 
 						: selector(std::move(selectorBus)),
@@ -39,7 +39,7 @@ namespace nanoFramework
 						register_timer();
 					}
 
-					~_NativeState() {
+					~NativeState() {
 						if (timer_idx < 0) {
 							return;
 						}
@@ -80,7 +80,7 @@ namespace nanoFramework
 						return selector.configured() && displayPolicy.configured() && 
 							(timer_idx >= 0);
 					}
-					
+
 				private:
 					selector_t selector;
 					display_policy_t displayPolicy;
@@ -136,7 +136,7 @@ namespace nanoFramework
 					}
 
 					static void timer_cb(void* arg) {
-						auto _this = static_cast<_NativeState*>(arg);
+						auto _this = static_cast<NativeState*>(arg);
 						_this->NextGroup();
 					}
 
@@ -154,5 +154,7 @@ namespace nanoFramework
         }
     }
 }
+
+
 
 #endif  //_NATIVE_STATE_H_
