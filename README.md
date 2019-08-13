@@ -60,7 +60,7 @@ c.Dispose();
 ```
 
 ## Build
-1. Clone repository in any dirrectory
+1. Clone repository into any dirrectory
 ```
 git clone https://github.com/ololoshka2871/nanoFramework.Hardware.Esp32.DynamicIndication.git
 ```
@@ -77,7 +77,7 @@ Replace `${PROJECT_SOURCE_DIR}/<PATH_TO_YOUR nanoFramework.Hardware.Esp32.Dynami
 
 6. Build and flash nf-interpreter into ESP32
 
-7. Add reference to **nanoFramework.Hardware.Esp32.DynamicIndication** in your C# project.
+7. Add reference to **nanoFramework.Hardware.Esp32.DynamicIndication** library into your C# project.
 
 8. Build and deploy application into ESP32
 
