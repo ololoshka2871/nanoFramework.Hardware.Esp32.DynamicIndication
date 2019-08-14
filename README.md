@@ -39,7 +39,7 @@ using nanoFramework.Hardware.Esp32.DynamicIndication;
 // create DynamicIndication controller
 Controller c = new Controller(
     new int[] {	27, 26, 25, 33, 32, 5, 18, 19 }, // data bus pins
-    new int[] {	13, 2, 14 }; // control bus pins
+    new int[] {	13, 2, 14 }, // control bus pins
     4 // Data bits pre one indicator group 74141 input data bits count
 );
 
